@@ -12,14 +12,24 @@
   <div class="container">
     <h1>Welcome to Health & Fitness Tracker</h1>
     <p>Track your water intake, calories, and workouts – all in one place. Stay consistent, stay healthy! 🌱</p>
+    
+    {% if user.is_authenticated %}
+    <!-- Display logout button only if the user is logged in -->
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+    {% else %}
+    <!-- Display the Get Started button for non-logged-in users -->
     <button onclick="startApp()">Get Started</button>
+    {% endif %}
+    
     <footer>Made with ❤️ at Hackverse</footer>
   </div>
 
   <script>
     function startApp() {
-      // Replace this with redirect to login or register
-      window.location.href = "/login"; // Django login route
+      window.location.href = "/login"; // Redirect to login route
     }
   </script>
 </body>

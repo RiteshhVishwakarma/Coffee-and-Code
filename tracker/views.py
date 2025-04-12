@@ -1,79 +1,54 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login as auth_login
-from .forms import CustomUserRegistrationForm
-from .models import UserProfile
-from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import CustomUserRegistrationForm, CustomLoginForm
 
-# ritesh@123 admin pass admin username
-# Create your views here.
+# Home Page View
 def home(request):
-    # return HttpResponse("HEllo world")
     return render(request, 'home.html')
 
-def login(request):
-    return render(request, 'login.html')
+# Login View
+# tracker/views.py
+def login_view(request):
+    if request.method == 'POST':
+        form = CustomLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                auth_login(request, user)
+                return redirect('home')  # Redirect to dashboard or any other page
+            else:
+                messages.error(request, 'Invalid credentials')
+    else:
+        form = CustomLoginForm()
+    
+    return render(request, 'login.html', {'form': form})
 
-
+# Registration View
 def register(request):
     if request.method == 'POST':
         form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')  # ya jo bhi page dikhana ho
+            user = form.save()
+            return redirect('login')  # Redirect to login page after successful registration
     else:
         form = CustomUserRegistrationForm()
+    
     return render(request, 'register.html', {'form': form})
 
+# Logout View
+def logout_view(request):
+    auth_logout(request)
+    return redirect('home')  # Redirect to home page after logging out
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def register(request):
-#     if request.method == 'POST':
-#         form = CustomUserRegistrationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             # Get extra fields from form.cleaned_data
-#             name = form.cleaned_data['name']
-#             age = form.cleaned_data['age']
-#             height = form.cleaned_data['height']
-#             weight = form.cleaned_data['weight']
-#             gender = form.cleaned_data['gender']
-
-#             # Create UserProfile linked to user
-#             UserProfile.objects.create(
-#                 user=user,
-#                 name=name,
-#                 age=age,
-#                 height=height,
-#                 weight=weight,
-#                 gender=gender
-#             )
-#             return redirect('login')  # Change to your desired redirect
-#     else:
-#         form = CustomUserRegistrationForm()
-#     return render(request, 'signup.html', {'form': form})
-
-def logout(request):
-    return render(request, 'logout.html')
-
-
+# About Page View
 def about(request):
     return render(request, 'about.html')
 
+# Profile Page View
 def profile(request):
     return render(request, 'profile.html')

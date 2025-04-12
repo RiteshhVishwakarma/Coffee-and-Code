@@ -27,3 +27,8 @@ class CustomUserRegistrationForm(UserCreationForm):
                 gender=self.cleaned_data['gender']
             )
         return user
+
+# New Login Form
+class CustomLoginForm(forms.Form):
+    username = forms.CharField(max_length=150, required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
