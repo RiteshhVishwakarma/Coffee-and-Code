@@ -12,8 +12,6 @@
     <nav>
       <a href="{% url 'home' %}">Home</a>
       <a href="{% url 'profile' %}">Profile</a>
-
-      <!-- Logout button as a form -->
       <form method="POST" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
         <button type="submit" style="background:none; border:none; color: #007bff; cursor: pointer;">Log out</button>
@@ -24,7 +22,7 @@
   <main>
     <section class="summary">
       <h2>Hi {{ request.user.username }}👋, here's your daily summary 🚀</h2>
-      <p>Saturday, April 12, 2025</p>
+      <p>{{ today|date:"l, F j, Y" }}</p>
     </section>
 
     <section class="cards">
@@ -36,13 +34,13 @@
             <path class="bg" d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="progress" stroke-dasharray="75, 100" d="M18 2.0845
+            <path class="progress" stroke-dasharray="{{ water_percent }}, 100" d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"/>
           </svg>
-          <div class="circle-center">1.5 / 2 L</div>
+          <div class="circle-center">{{ water_intake }} / {{ water_goal }} L</div>
         </div>
-        <p class="goal">75% of daily goal</p>
+        <p class="goal">{{ water_percent }}% of daily goal</p>
       </div>
 
       <!-- Calories -->
@@ -53,13 +51,13 @@
             <path class="bg" d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="progress" stroke-dasharray="82, 100" d="M18 2.0845
+            <path class="progress" stroke-dasharray="{{ calories_percent }}, 100" d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"/>
           </svg>
-          <div class="circle-center">1800 / 2200 kcal</div>
+          <div class="circle-center">{{ calories_consumed }} / {{ calories_goal }} kcal</div>
         </div>
-        <p class="goal">82% of daily goal</p>
+        <p class="goal">{{ calories_percent }}% of daily goal</p>
       </div>
 
       <!-- Exercise -->
@@ -70,22 +68,21 @@
             <path class="bg" d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="progress" stroke-dasharray="75, 100" d="M18 2.0845
+            <path class="progress" stroke-dasharray="{{ exercise_percent }}, 100" d="M18 2.0845
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"/>
           </svg>
-          <div class="circle-center">45 / 60 min</div>
+          <div class="circle-center">{{ exercise_done }} / {{ exercise_goal }} min</div>
         </div>
-        <p class="goal">75% of daily goal</p>
+        <p class="goal">{{ exercise_percent }}% of daily goal</p>
       </div>
     </section>
 
     <section class="actions">
-      <button class="log">+ Add New Log</button>
+      
+      <button class="log"><a href="{% url 'logpage' %}">+ Add New Log</a></button>
       <button class="view">View Progress</button>
     </section>
   </main>
-  <!-- Animation -->
-   
 </body>
 </html>

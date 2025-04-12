@@ -25,6 +25,7 @@ class DailyLog(models.Model):
     calories_consumed = models.IntegerField(null=True, blank=True)  # in kcal
     calories_burned = models.IntegerField(null=True, blank=True)  # in kcal
     excersise_done = models.CharField(max_length=255, null=True, blank=True)  # e.g. "Running, Cycling"
+    water_intake = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.user.username} Daily Log - {self.date}'

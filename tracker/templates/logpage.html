@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Activity Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/logpage.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="wave">📈</span>
+      <span class="title">Activity Tracker</span>
+    </div>
+    <nav>
+      <a href="#"><span class="icon">🏠</span> Home</a>
+      <a href="#"><span class="icon">👤</span> Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Daily Activity Tracker</h2>
+
+      <form method="POST" action="{% url 'logpage' %}">
+        {% csrf_token %}
+
+        <div class="input-group">
+          <label><span class="icon">💧</span> Water Intake (in liters)</label>
+          <input type="number" name="water_intake" step="0.1" placeholder="Enter water intake">
+        </div>
+
+        <div class="input-group">
+          <label><span class="icon">🔥</span> Calories Consumed (in kcal)</label>
+          <input type="number" name="calories_consumed" placeholder="Enter calories consumed">
+        </div>
+
+        <div class="input-group">
+          <label><span class="icon">⏱️</span> Exercise Done</label>
+          <input type="text" name="exercise_done" placeholder="e.g., Running, Cycling">
+        </div>
+
+        <button type="submit" class="save-btn">Save Activity</button>
+      </form>
+
+      <div class="footer-msg">
+        <p><strong>Keep going!</strong> <span>✨</span></p>
+        <small>Every small step counts towards your goal</small>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
