@@ -5,9 +5,9 @@ from .forms import CustomUserRegistrationForm, CustomLoginForm
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from .models import DailyLog
-# from datetime import date
+from datetime import date
 
-# Dashboard Page View
+# # Dashboard Page View
 @login_required
 def dashboard(request):
     today = now().date()
@@ -56,8 +56,8 @@ def log(request):
     return render(request, 'logpage.html')
 
 
-def current_date(request):
-    return {'now': now()}
+# def current_date(request):
+#     return {'now': now()}
 
 @login_required
 def profile(request):
@@ -107,7 +107,3 @@ def logout_view(request):
 # About Page View
 def about(request):
     return render(request, 'about.html')
-
-# Profile Page View
-def profile(request):
-    return render(request, 'profile.html')
