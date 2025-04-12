@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Log</title>
+  <link rel="stylesheet" href="{% static 'css/weekly_log.css' %}">
+</head>
+<body>
+  <header>
+    <div class="logo">Fit Profile</div>
+    <nav>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'profile' %}">Profile</a>
+      <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Log out</button>
+      </form>
+    </nav>
+  </header>
+
+  <main>
+    <section class="weekly-summary">
+      <h2>Weekly Summary</h2>
+      <p>Total Water Intake: {{ total_water }} L / {{ goal.water_goal }} L</p>
+      <p>Total Calories: {{ total_calories }} kcal / {{ goal.calorie_goal }} kcal</p>
+      <p>Total Exercise: {{ total_exercise }} min / {{ goal.exercise_goal }} min</p>
+
+      <h3>Progress</h3>
+      <p>Water Intake: {{ water_percentage }}%</p>
+      <p>Calories: {{ calories_percentage }}%</p>
+      <p>Exercise: {{ exercise_percentage }}%</p>
+    </section>
+
+    <section class="actions">
+      <p><a href="{% url 'log_water' %}">Add Water Intake</a></p>
+      <p><a href="{% url 'log_calories' %}">Add Calories</a></p>
+      <p><a href="{% url 'log_exercise' %}">Add Exercise</a></p>
+    </section>
+  </main>
+</body>
+</html>

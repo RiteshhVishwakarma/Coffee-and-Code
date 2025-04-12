@@ -7,10 +7,57 @@ from django.utils.timezone import now
 from .models import DailyLog
 # from datetime import date
 from .models import WeeklyGoal
+# from datetime import date, timedelta, timezone
 from datetime import date, timedelta
+from django.utils import timezone
 from .forms import WaterIntakeForm, CalorieForm, ExerciseForm
 
 
+def weekly_log(request):
+    today = timezone.now().date()
+    week_ago = today - timedelta(days=7)
+    
+    # Fetch logs for the last week
+    logs = DailyLog.objects.filter(user=request.user, date__gte=week_ago)
+
+    # Sum the total water, calories, and exercise
+    total_water = sum(log.water_intake or 0 for log in logs)
+    total_calories = sum(log.calories or 0 for log in logs)
+    total_exercise = sum(log.exercise_duration or 0 for log in logs)
+
+    # Weekly goals
+    goal, _ = WeeklyGoal.objects.get_or_create(
+        user=request.user,
+        defaults={
+            'water_goal': 14.0,       # Default 14 liters/week
+            'calorie_goal': 14000,    # Default 2000/day × 7
+            'exercise_goal': 210      # Default 30 min/day × 7
+        }
+    )
+
+    # Calculate percentages
+    water_percentage = (total_water / goal.water_goal) * 100 if goal.water_goal > 0 else 0
+    calories_percentage = (total_calories / goal.calorie_goal) * 100 if goal.calorie_goal > 0 else 0
+    exercise_percentage = (total_exercise / goal.exercise_goal) * 100 if goal.exercise_goal > 0 else 0
+
+    context = {
+        'logs': logs,
+        'total_water': total_water,
+        'total_calories': total_calories,
+        'total_exercise': total_exercise,
+        'goal': goal,
+        'water_percentage': water_percentage,
+        'calories_percentage': calories_percentage,
+        'exercise_percentage': exercise_percentage,
+    }
+    return render(request, 'weekly_log.html', context)
+
+
+
+
+
+
+# ___________________________ working below code
 @login_required
 def add_water(request):
     if request.method == 'POST':
