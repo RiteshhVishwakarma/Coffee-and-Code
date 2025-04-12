@@ -60,3 +60,18 @@ class ExerciseForm(forms.ModelForm):
     class Meta:
         model = DailyLog
         fields = ['exercise_duration']
+
+
+
+# from django import forms
+from .models import Goal
+
+class GoalForm(forms.ModelForm):
+    class Meta:
+        model = Goal
+        fields = ['water_goal', 'calories_goal', 'exercise_goal']
+        widgets = {
+            'water_goal': forms.NumberInput(attrs={'step': 0.1, 'min': 0}),
+            'calories_goal': forms.NumberInput(attrs={'min': 0}),
+            'exercise_goal': forms.NumberInput(attrs={'min': 0}),
+        }

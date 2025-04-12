@@ -157,3 +157,133 @@ body {
     border-radius: 10%;
    margin-left: 10px;
   }
+
+
+  #recommendation-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #F8B500;
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 9999;
+    animation: slideIn 1s ease-out;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 280px;
+  }
+  
+  .popup-content h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .popup-content ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  
+  .popup-content li {
+    margin-bottom: 6px;
+  }
+  
+  .popup-footer {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #fff;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #recommendation-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #F8B500;
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 9999;
+    animation: slideIn 1s ease-out;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 280px;
+  }
+  
+  .popup-content h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .popup-content ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  
+  .popup-content li {
+    margin-bottom: 6px;
+  }
+  
+  .popup-footer {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #fff;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }  
+  }
+
+  #recommendation-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #F8B500;
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    animation: slideIn 1s ease-out;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 280px;
+    cursor: move; /* Indicate it's draggable */
+  }
+  

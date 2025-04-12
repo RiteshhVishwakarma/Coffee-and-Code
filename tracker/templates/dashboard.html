@@ -33,6 +33,7 @@
     <div class="logo">Fit Profile</div>
     <nav>
       <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'edit_goal' %}">Edit Goals</a>
       <a href="{% url 'profile' %}">Profile</a>
       <form method="POST" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
@@ -95,6 +96,20 @@
       <button class="view"><a href="{% url 'weekly_log' %}">View Progress</a></button>
     </section>
   </main>
+  <!-- Pop up -->
+  <div id="recommendation-popup">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">✖</span>
+      <h3>💡 Daily Wellness Tips</h3>
+      <ul>
+        <li>💧 Drink 2.7–3.7L water daily</li>
+        <li>🔥 Calories: 1600–3000 kcal/day based on activity</li>
+        <li>🏃‍♀️ Exercise: 30–60 mins every day</li>
+      </ul>
+      <p class="popup-footer">Stay healthy and shine 🌟</p>
+    </div>
+  </div>
+  
 
   <script>
     // GSAP typewriter effect for the title
@@ -112,6 +127,66 @@
         { color: "#393E46" }, 
         { color: "#F8B500", duration: 2, ease: "power2.out" });
     };
+
+    // POP UP function
+    function closePopup() {
+  document.getElementById("recommendation-popup").style.display = "none";
+}
+
+window.onload = function() {
+  // GSAP animation for the title
+  const titleText = "Hi {{ request.user.username }}👋, here's your daily summary 🚀";
+  const targetElement = document.querySelector(".animated-title");
+  
+  // Start the typewriter animation with GSAP
+  gsap.fromTo(targetElement, 
+    { width: 0, opacity: 0, x: 20 }, 
+    { width: "auto", opacity: 1, x: 0, duration: 3, ease: "power2.out" });
+
+  // Animate the name to make it more attention-grabbing
+  gsap.fromTo(".user-name", 
+    { color: "#393E46" }, 
+    { color: "#F8B500", duration: 2, ease: "power2.out" });
+
+  // Display the popup on page load
+  setTimeout(function() {
+    document.getElementById("recommendation-popup").style.display = "block";
+  }, 1000); // Show after 1 second
+
+  // Make the popup draggable
+  const popup = document.getElementById("recommendation-popup");
+  const dragHandle = popup.querySelector(".popup-content"); // Make the content area draggable
+
+  let isDragging = false;
+  let offsetX = 0, offsetY = 0;
+
+  // Mouse down event to initiate dragging
+  dragHandle.addEventListener('mousedown', function(event) {
+    isDragging = true;
+    offsetX = event.clientX - popup.getBoundingClientRect().left;
+    offsetY = event.clientY - popup.getBoundingClientRect().top;
+    document.body.style.cursor = 'move'; // Change cursor to indicate dragging
+  });
+
+  // Mouse move event to drag the popup
+  document.addEventListener('mousemove', function(event) {
+    if (isDragging) {
+      const left = event.clientX - offsetX;
+      const top = event.clientY - offsetY;
+      popup.style.left = `${left}px`;
+      popup.style.top = `${top}px`;
+    }
+  });
+
+  // Mouse up event to stop dragging
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+    document.body.style.cursor = 'default'; // Reset cursor after drag
+  });
+};
+
+
+  
   </script>
 
 </body>

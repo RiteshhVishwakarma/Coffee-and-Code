@@ -50,3 +50,10 @@ class WeeklyGoal(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - Weekly Goal"
+
+
+class Goal(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    water_goal = models.FloatField(default=2.0)
+    calories_goal = models.IntegerField(default=2000)
+    exercise_goal = models.IntegerField(default=60)
