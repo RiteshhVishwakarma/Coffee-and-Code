@@ -1,16 +1,166 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Weekly Log</title>
-  <link rel="stylesheet" href="{% static 'css/weekly_log.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Fitness Log</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.0/gsap.min.js"></script>
+    
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F5F5F5;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #00ADB5;
+}
+
+header nav a {
+    margin-right: 20px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+header nav button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0;
+}
+
+header nav button:hover {
+    text-decoration: underline;
+}
+
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* Header */
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #0984E3;
+            margin-bottom: 20px;
+        }
+
+        #motivation-alert {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background-color: #ffeaa7;
+    color: #2d3436;
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    font-weight: bold;
+    z-index: 999;
+    transform: translateY(-100px);
+    opacity: 0;
+}
+
+
+        /* Chart Container */
+        .chart-container {
+            background-color: #FFFFFF;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .chart-container canvas {
+            margin-top: 10px;
+        }
+
+        /* Goal and Progress Section */
+        .goal-progress {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .goal-box {
+            background-color: #00B894;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            text-align: center;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .goal-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .goal-box p {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .goal-box {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .goal-box {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
   <header>
     <div class="logo">Fit Profile</div>
     <nav>
-      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
       <a href="{% url 'profile' %}">Profile</a>
       <form method="POST" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
@@ -19,24 +169,129 @@
     </nav>
   </header>
 
-  <main>
-    <section class="weekly-summary">
-      <h2>Weekly Summary</h2>
-      <p>Total Water Intake: {{ total_water }} L / {{ goal.water_goal }} L</p>
-      <p>Total Calories: {{ total_calories }} kcal / {{ goal.calorie_goal }} kcal</p>
-      <p>Total Exercise: {{ total_exercise }} min / {{ goal.exercise_goal }} min</p>
+<div class="container">
+    <h1>Weekly Fitness Log</h1>
 
-      <h3>Progress</h3>
-      <p>Water Intake: {{ water_percentage }}%</p>
-      <p>Calories: {{ calories_percentage }}%</p>
-      <p>Exercise: {{ exercise_percentage }}%</p>
-    </section>
+    <div class="chart-container">
+        <h2>Weekly Progress</h2>
+        <canvas id="myChart"></canvas>
+    </div>
 
-    <section class="actions">
-      <p><a href="{% url 'log_water' %}">Add Water Intake</a></p>
-      <p><a href="{% url 'log_calories' %}">Add Calories</a></p>
-      <p><a href="{% url 'log_exercise' %}">Add Exercise</a></p>
-    </section>
-  </main>
+    <!-- Cute Motivation Alert -->
+      <div id="motivation-alert">
+        <p id="motivational-text">You’re doing great!</p>
+      </div>
+
+    <div class="goal-progress">
+        <div class="goal-box">
+            <h3>Water Intake</h3>
+            <p>Total: {{ total_water }} L</p>
+            <p>Progress: {{ water_percentage }}%</p>
+        </div>
+        <div class="goal-box">
+            <h3>Calories Burned</h3>
+            <p>Total: {{ total_calories }} kcal</p>
+            <p>Progress: {{ calories_percentage }}%</p>
+        </div>
+        <div class="goal-box">
+            <h3>Exercise Duration</h3>
+            <p>Total: {{ total_exercise }} mins</p>
+            <p>Progress: {{ exercise_percentage }}%</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Data passed from the Django view
+    const totalWater = {{ total_water }};
+    const totalCalories = {{ total_calories }};
+    const totalExercise = {{ total_exercise }};
+    const waterPercentage = {{ water_percentage }};
+    const caloriesPercentage = {{ calories_percentage }};
+    const exercisePercentage = {{ exercise_percentage }};
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Water Intake', 'Calories', 'Exercise'],
+            datasets: [{
+                label: 'Weekly Data',
+                data: [totalWater, totalCalories, totalExercise],
+                borderColor: ['#0984E3', '#D63031', '#00B894'],
+                backgroundColor: ['rgba(9, 132, 227, 0.2)', 'rgba(214, 48, 49, 0.2)', 'rgba(0, 184, 148, 0.2)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let percentage = 0;
+                            if (context.dataIndex === 0) {
+                                percentage = waterPercentage;
+                            } else if (context.dataIndex === 1) {
+                                percentage = caloriesPercentage;
+                            } else if (context.dataIndex === 2) {
+                                percentage = exercisePercentage;
+                            }
+                            return context.dataset.label + ': ' + context.raw + ' (' + percentage.toFixed(2) + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // GSAP animations for goal boxes
+    gsap.to(".goal-box", {
+        duration: 1,
+        opacity: 1,
+        transform: "translateY(0)",
+        stagger: 0.3, 
+        delay: 1, // Starts after the chart is loaded
+        ease: "power2.out"
+    });
+    // Motivational Messages
+const motivationalQuotes = [
+    "You’re doing amazing, keep it up! 💪",
+    "Every step counts. You're closer than you think! 🚶‍♂️✨",
+    "Fitness isn't a goal, it’s a lifestyle! 🧘‍♀️",
+    "You’re stronger than your excuses! 🔥",
+    "One day at a time. You got this! 🌟"
+];
+
+// Pick a random quote
+const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+document.getElementById("motivational-text").textContent = randomQuote;
+
+// Animate it with GSAP
+gsap.to("#motivation-alert", {
+    duration: 1,
+    opacity: 1,
+    y: 100,
+    ease: "bounce.out"
+});
+
+// Auto hide after 5 seconds
+setTimeout(() => {
+    gsap.to("#motivation-alert", {
+        duration: 0.8,
+        opacity: 0,
+        y: -100,
+        ease: "power2.in"
+    });
+}, 5000);
+
+</script>
+
 </body>
 </html>
