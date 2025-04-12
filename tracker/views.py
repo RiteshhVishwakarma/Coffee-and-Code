@@ -2,9 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from .forms import CustomUserRegistrationForm, CustomLoginForm
+from django.contrib.auth.decorators import login_required
 
-# Home Page View
-def home(request):
+# Dashboard Page View
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+def home(request): 
     return render(request, 'home.html')
 
 # Login View
@@ -20,7 +25,7 @@ def login_view(request):
             
             if user is not None:
                 auth_login(request, user)
-                return redirect('home')  # Redirect to dashboard or any other page
+                return redirect('dashboard')  # Redirect to dashboard or any other page
             else:
                 messages.error(request, 'Invalid credentials')
     else:

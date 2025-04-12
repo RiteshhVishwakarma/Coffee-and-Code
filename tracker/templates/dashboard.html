@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FitProfile Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+  <header>
+    <div class="logo">Fit Profile</div>
+    <nav>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'profile' %}">Profile</a>
+
+      <!-- Logout button as a form -->
+      <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:none; border:none; color: #007bff; cursor: pointer;">Log out</button>
+      </form>
+    </nav>
+  </header>
+
+  <main>
+    <section class="summary">
+      <h2>Hi {{ request.user.username }}, here's your daily summary</h2>
+      <p>Saturday, April 12, 2025</p>
+    </section>
+
+    <section class="cards">
+      <!-- Water Intake -->
+      <div class="card">
+        <p class="label">Water Intake</p>
+        <div class="circle-chart blue">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path class="bg" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="progress" stroke-dasharray="75, 100" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <div class="circle-center">1.5 / 2 L</div>
+        </div>
+        <p class="goal">75% of daily goal</p>
+      </div>
+
+      <!-- Calories -->
+      <div class="card">
+        <p class="label">Calories Consumed</p>
+        <div class="circle-chart red">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path class="bg" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="progress" stroke-dasharray="82, 100" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <div class="circle-center">1800 / 2200 kcal</div>
+        </div>
+        <p class="goal">82% of daily goal</p>
+      </div>
+
+      <!-- Exercise -->
+      <div class="card">
+        <p class="label">Exercise Done</p>
+        <div class="circle-chart green">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path class="bg" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="progress" stroke-dasharray="75, 100" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <div class="circle-center">45 / 60 min</div>
+        </div>
+        <p class="goal">75% of daily goal</p>
+      </div>
+    </section>
+
+    <section class="actions">
+      <button class="log">+ Add New Log</button>
+      <button class="view">View Progress</button>
+    </section>
+  </main>
+</body>
+</html>
