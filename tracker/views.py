@@ -11,6 +11,7 @@ from .models import WeeklyGoal
 from datetime import date, timedelta
 from django.utils import timezone
 from .forms import WaterIntakeForm, CalorieForm, ExerciseForm
+from .models import UserProfile
 
 
 def weekly_log(request):
@@ -63,38 +64,58 @@ def add_water(request):
     if request.method == 'POST':
         form = WaterIntakeForm(request.POST)
         if form.is_valid():
-            log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
-            log.water_intake = form.cleaned_data['water_intake']
-            log.save()
+            # Get or create the DailyLog entry for today
+            log, created = DailyLog.objects.get_or_create(user=request.user, date=date.today())
+            
+            # Add the new water intake to the existing intake (if any)
+            log.water_intake += form.cleaned_data['water_intake']
+            log.save()  # Save the updated value
+            
+            # Redirect to the dashboard after saving
             return redirect('dashboard')
     else:
         form = WaterIntakeForm()
+    
     return render(request, 'log_water.html', {'form': form})
+
 
 @login_required
 def add_calories(request):
     if request.method == 'POST':
         form = CalorieForm(request.POST)
         if form.is_valid():
-            log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
-            log.calories = form.cleaned_data['calories']
-            log.save()
+            # Get or create the DailyLog entry for today
+            log, created = DailyLog.objects.get_or_create(user=request.user, date=date.today())
+            
+            # Add the new calories to the existing calories intake
+            log.calories += form.cleaned_data['calories']
+            log.save()  # Save the updated value
+            
+            # Redirect to the dashboard after saving
             return redirect('dashboard')
     else:
         form = CalorieForm()
+    
     return render(request, 'log_calories.html', {'form': form})
+
 
 @login_required
 def add_exercise(request):
     if request.method == 'POST':
         form = ExerciseForm(request.POST)
         if form.is_valid():
-            log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
-            log.exercise_duration = form.cleaned_data['exercise_duration']
-            log.save()
+            # Get or create the DailyLog entry for today
+            log, created = DailyLog.objects.get_or_create(user=request.user, date=date.today())
+            
+            # Add the new exercise duration to the existing duration
+            log.exercise_duration += form.cleaned_data['exercise_duration']
+            log.save()  # Save the updated value
+            
+            # Redirect to the dashboard after saving
             return redirect('dashboard')
     else:
         form = ExerciseForm()
+    
     return render(request, 'log_exercise.html', {'form': form})
 
 
@@ -194,7 +215,8 @@ def log(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, 'profile.html', {'profile': user_profile})
 
 def home(request): 
     return render(request, 'home.html')

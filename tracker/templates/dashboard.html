@@ -5,6 +5,27 @@
   <meta charset="UTF-8">
   <title>FitProfile Dashboard</title>
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  
+  <!-- Add GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+  <style>
+    /* Add styles for the typewriter effect */
+    .animated-title {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 4px solid #00ADB5; /* Cursor effect */
+      font-size: 2em;
+      font-family: 'Courier New', monospace;
+      width: 0;
+    }
+
+    .user-name {
+      color: #F8B500; /* Bright yellow to catch attention */
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   
@@ -22,74 +43,76 @@
 
   <main>
     <section class="summary">
-      <h2>Hi {{ request.user.username }}👋, here's your daily summary 🚀</h2>
+      <!-- Typewriter effect for the heading -->
+      <h2 class="animated-title">Hi <span class="user-name">{{ request.user.username }}</span>👋, here's your daily summary 🚀</h2>
       <p>{{ today|date:"l, F j, Y" }}</p>
     </section>
 
     <section class="cards">
       <!-- Water Intake -->
-      <!-- Water Intake -->
-<div class="card">
-  <p class="label">Water Intake</p>
-  <div class="circle-chart blue">
-    <svg viewBox="0 0 36 36" class="circular-chart">
-      <path class="bg" d="M18 2.0845
-        a 15.9155 15.9155 0 0 1 0 31.831
-        a 15.9155 15.9155 0 0 1 0 -31.831"/>
-      <path class="progress" stroke-dasharray="{{ water_percent }}, 100" d="M18 2.0845
-        a 15.9155 15.9155 0 0 1 0 31.831
-        a 15.9155 15.9155 0 0 1 0 -31.831"/>
-    </svg>
-    <div class="circle-center">{{ water_intake }} / {{ water_goal }} L</div>
-  </div>
-  <p class="goal">{{ water_percent }}% of daily goal</p>
-  <p><a href="{% url 'log_water' %}">Add Water Intake</a></p>
-</div>
-
+      <div class="card">
+        <p class="label">Water Intake</p>
+        <div class="circle-chart blue">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path class="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="progress" stroke-dasharray="{{ water_percent }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <div class="circle-center">{{ water_intake }} / {{ water_goal }} L</div>
+        </div>
+        <p class="goal">{{ water_percent }}% of daily goal</p>
+        <p><a href="{% url 'log_water' %}">Add Water Intake</a></p>
+      </div>
 
       <!-- Calories -->
       <div class="card">
         <p class="label">Calories</p>
         <div class="circle-chart red">
           <svg viewBox="0 0 36 36" class="circular-chart">
-            <path class="bg" d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="progress" stroke-dasharray="{{ calories_percent }}, 100" d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="progress" stroke-dasharray="{{ calories_percent }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
           </svg>
           <div class="circle-center">{{ total_calories }} / {{ calories_goal }} kcal</div>
         </div>
         <p class="goal">{{ calories_percent }}% of daily goal</p>
         <p><a href="{% url 'log_calories' %}">Add Calories</a></p>
       </div>
-      
 
       <div class="card">
         <p class="label">Exercise Duration</p>
         <div class="circle-chart green">
           <svg viewBox="0 0 36 36" class="circular-chart">
-            <path class="bg" d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="progress" stroke-dasharray="{{ exercise_percent }}, 100" d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="progress" stroke-dasharray="{{ exercise_percent }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
           </svg>
           <div class="circle-center">{{ total_exercise }} / {{ exercise_goal }} mins</div>
         </div>
         <p class="goal">{{ exercise_percent }}% of daily goal</p>
         <p><a href="{% url 'log_exercise' %}">Add Exercise</a></p>
       </div>
-      
     </section>
 
     <section class="actions">
-      
-      <!-- <button class="log"><a href="{% url 'logpage' %}">+ Add New Log</a></button> -->
       <button class="view"><a href="{% url 'weekly_log' %}">View Progress</a></button>
     </section>
   </main>
+
+  <script>
+    // GSAP typewriter effect for the title
+    window.onload = function() {
+      const titleText = "Hi {{ request.user.username }}👋, here's your daily summary 🚀";
+      const targetElement = document.querySelector(".animated-title");
+      
+      // Start the typewriter animation with GSAP
+      gsap.fromTo(targetElement, 
+        { width: 0, opacity: 0, x: 20 }, 
+        { width: "auto", opacity: 1, x: 0, duration: 3, ease: "power2.out" });
+
+      // Animate the name to make it more attention-grabbing
+      gsap.fromTo(".user-name", 
+        { color: "#393E46" }, 
+        { color: "#F8B500", duration: 2, ease: "power2.out" });
+    };
+  </script>
+
 </body>
 </html>
