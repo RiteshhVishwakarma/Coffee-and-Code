@@ -33,9 +33,10 @@ class UserProfile(models.Model):
 class DailyLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-    water_intake = models.FloatField(null=True, blank=True)
-    calories = models.IntegerField(null=True, blank=True)
-    exercise_duration = models.IntegerField(null=True, blank=True)
+    water_intake = models.BooleanField()
+    calories = models.IntegerField(null=True, blank=True, default=False)
+    exercise_duration = models.IntegerField(null=True, blank=True, default= )
+    value = models.IntegerField(null=False, blank=False)
 
     def __str__(self):
         return f'{self.user.username} - {self.date}'
