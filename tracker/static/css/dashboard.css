@@ -42,7 +42,7 @@ body {
   
   .cards {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     margin-top: 30px;
     flex-wrap: wrap;
     justify-content: center;
@@ -53,8 +53,14 @@ body {
     border-radius: 12px;
     padding: 20px;
     width: 250px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 2px 0px 10px 0.5px rgb(26, 38, 25);
     text-align: center;
+  }
+
+  .card:hover{
+    box-shadow: 2px 2px 10px 1px rgb(26, 38, 25);
+    transition: all 0.3s ease-in-out;
+    scale: 1.05;
   }
   
   .label {

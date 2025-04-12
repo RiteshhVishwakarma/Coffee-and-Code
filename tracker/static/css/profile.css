@@ -1,0 +1,153 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: #f5f8f9;
+    color: #333;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  header h1 {
+    color: #c82333;
+    font-size: 24px;
+  }
+  
+  nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  nav a.active {
+    border-bottom: 2px solid #0cbaba;
+    color: #0cbaba;
+  }
+  
+  .container {
+    display: flex;
+    padding: 40px 50px;
+  }
+  
+  .profile-card {
+    width: 25%;
+    text-align: center;
+    padding-right: 30px;
+  }
+  
+  .profile-image {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #007bff;
+  }
+  
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .edit-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .profile-card h2 {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .info-card {
+    width: 75%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+  
+  .info-card h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .info-box {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 10px;
+  }
+  
+  .label {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .value {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .red {
+    color: #d63384;
+  }
+  
+  .green {
+    color: #28a745;
+  }
+    .editable-name {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        text-align: center;
+        width: 80%;
+      }
+      
+      .value-input {
+        width: 100%;
+        font-size: 18px;
+        padding: 5px;
+        margin: 5px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      button{
+         
+        border-radius: 10%;
+        margin-left: 10px;
+      }
+  
