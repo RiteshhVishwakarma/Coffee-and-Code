@@ -21,7 +21,7 @@ def dashboard(request):
     total_water = sum(log.water_intake or 0 for log in logs)
     total_calories = sum(log.calories or 0 for log in logs)
     total_exercise = sum(log.exercise_duration or 0 for log in logs)
-    goal, _ = WeeklyGoal.objects.get_or_create(user=request.user)
+    # goal, _ = WeeklyGoal.objects.get_or_create(user=request.user)
 
 
     context = {
@@ -29,7 +29,7 @@ def dashboard(request):
         'total_water': total_water,
         'total_calories': total_calories,
         'total_exercise': total_exercise,
-        'goal': goal,
+        # 'goal': goal,
     }
     return render(request, 'dashboard.html', context)
 
