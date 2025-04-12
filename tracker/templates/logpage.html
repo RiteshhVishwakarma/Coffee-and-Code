@@ -14,8 +14,8 @@
       <span class="title">Activity Tracker</span>
     </div>
     <nav>
-      <a href="#"><span class="icon">🏠</span> Home</a>
-      <a href="#"><span class="icon">👤</span> Profile</a>
+      <a href="{% url 'home' %}"><span class="icon">🏠</span> Home</a>
+      <a href="{% url 'profile' %}"><span class="icon">👤</span> Profile</a>
     </nav>
   </header>
 
@@ -23,25 +23,24 @@
     <section class="card">
       <h2>Daily Activity Tracker</h2>
 
-      <form method="POST" action="{% url 'logpage' %}">
+      <form method="POST">
         {% csrf_token %}
-
         <div class="input-group">
           <label><span class="icon">💧</span> Water Intake (in liters)</label>
-          <input type="number" name="water_intake" step="0.1" placeholder="Enter water intake">
+          <input type="number" name="water_intake" step="0.1" placeholder="Enter water intake" required>
         </div>
 
         <div class="input-group">
-          <label><span class="icon">🔥</span> Calories Consumed (in kcal)</label>
-          <input type="number" name="calories_consumed" placeholder="Enter calories consumed">
+          <label><span class="icon">🔥</span> Calories (in kcal)</label>
+          <input type="number" name="calories_consumed" placeholder="Enter calories" required>
         </div>
 
         <div class="input-group">
-          <label><span class="icon">⏱️</span> Exercise Done</label>
-          <input type="text" name="exercise_done" placeholder="e.g., Running, Cycling">
+          <label><span class="icon">⏱️</span> Exercise Duration (in minutes)</label>
+          <input type="number" name="exercise_duration" placeholder="Enter exercise duration" required>
         </div>
 
-        <button type="submit" class="save-btn">Save Activity</button>
+        <button class="save-btn" type="submit">Save Activity</button>
       </form>
 
       <div class="footer-msg">
