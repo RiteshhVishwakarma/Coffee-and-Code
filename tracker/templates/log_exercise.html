@@ -1,0 +1,16 @@
+<!-- log_calories.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Calories</title>
+</head>
+<body>
+    <h2>Add Calories Consumed</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

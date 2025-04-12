@@ -14,4 +14,9 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('logpage/', views.log, name='logpage'),
+
+    # Dividing Log
+    path('log/water/', views.add_water, name='log_water'),
+    path('log/calories/', views.add_calories, name='log_calories'),
+    path('log/exercise/', views.add_exercise, name='log_exercise'),
 ]

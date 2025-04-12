@@ -1,0 +1,7 @@
+<!-- log_water.html -->
+<h2>Add Water Intake</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>

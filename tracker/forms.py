@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
+from .models import DailyLog
 
 class CustomUserRegistrationForm(UserCreationForm):
     name = forms.CharField(max_length=100)
@@ -32,3 +33,30 @@ class CustomUserRegistrationForm(UserCreationForm):
 class CustomLoginForm(forms.Form):
     username = forms.CharField(max_length=150, required=True)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+
+
+from django import forms
+from .models import DailyLog
+
+class WaterIntakeForm(forms.ModelForm):
+    water_intake = forms.FloatField(
+        label='Water Intake (litres)',
+        min_value=0,
+        max_value=10,
+        widget=forms.NumberInput(attrs={'step': 0.1})
+    )
+
+    class Meta:
+        model = DailyLog
+        fields = ['water_intake']
+
+class CalorieForm(forms.ModelForm):
+    class Meta:
+        model = DailyLog
+        fields = ['calories']
+
+class ExerciseForm(forms.ModelForm):
+    class Meta:
+        model = DailyLog
+        fields = ['exercise_duration']

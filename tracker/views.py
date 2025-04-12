@@ -8,30 +8,118 @@ from .models import DailyLog
 # from datetime import date
 from .models import WeeklyGoal
 from datetime import date, timedelta
+from .forms import WaterIntakeForm, CalorieForm, ExerciseForm
+
+
+@login_required
+def add_water(request):
+    if request.method == 'POST':
+        form = WaterIntakeForm(request.POST)
+        if form.is_valid():
+            log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
+            log.water_intake = form.cleaned_data['water_intake']
+            log.save()
+            return redirect('dashboard')
+    else:
+        form = WaterIntakeForm()
+    return render(request, 'log_water.html', {'form': form})
+
+@login_required
+def add_calories(request):
+    if request.method == 'POST':
+        form = CalorieForm(request.POST)
+        if form.is_valid():
+            log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
+            log.calories = form.cleaned_data['calories']
+            log.save()
+            return redirect('dashboard')
+    else:
+        form = CalorieForm()
+    return render(request, 'log_calories.html', {'form': form})
+
+@login_required
+def add_exercise(request):
+    if request.method == 'POST':
+        form = ExerciseForm(request.POST)
+        if form.is_valid():
+            log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
+            log.exercise_duration = form.cleaned_data['exercise_duration']
+            log.save()
+            return redirect('dashboard')
+    else:
+        form = ExerciseForm()
+    return render(request, 'log_exercise.html', {'form': form})
 
 
 
-# # Dashboard Page View
 @login_required
 def dashboard(request):
     today = date.today()
     week_ago = today - timedelta(days=7)
+
+    # 7 days ka log
     logs = DailyLog.objects.filter(user=request.user, date__gte=week_ago)
 
+    # Total values from weekly logs
     total_water = sum(log.water_intake or 0 for log in logs)
     total_calories = sum(log.calories or 0 for log in logs)
     total_exercise = sum(log.exercise_duration or 0 for log in logs)
-    # goal, _ = WeeklyGoal.objects.get_or_create(user=request.user)
 
+    # Daily goal (you can also use WeeklyGoal and divide by 7 if needed)
+    daily_water_goal = 2.0  # in litres
+    water_today = DailyLog.objects.filter(user=request.user, date=today).first()
+    today_water_intake = water_today.water_intake if water_today and water_today.water_intake else 0
+
+    # Water percentage for today's intake
+    water_percent = (today_water_intake / daily_water_goal) * 100 if daily_water_goal > 0 else 0
 
     context = {
-        'logs': logs,
-        'total_water': total_water,
-        'total_calories': total_calories,
-        'total_exercise': total_exercise,
-        # 'goal': goal,
-    }
+    'water_intake': total_water,
+    'water_goal': 2,  # or user's custom goal
+    'water_percent': int((total_water / 2) * 100),
+
+    'total_calories': total_calories,
+    'calories_goal': 2000,
+    'calories_percent': int((total_calories / 2000) * 100),
+
+    'total_exercise': total_exercise,
+    'exercise_goal': 60,
+    'exercise_percent': int((total_exercise / 60) * 100),
+
+    'logs': logs,
+}
+
     return render(request, 'dashboard.html', context)
+
+
+
+
+
+
+
+# __________________________________________ WORKING below code
+
+# # Dashboard Page View
+@login_required
+# def dashboard(request):
+#     today = date.today()
+#     week_ago = today - timedelta(days=7)
+#     logs = DailyLog.objects.filter(user=request.user, date__gte=week_ago)
+
+#     total_water = sum(log.water_intake or 0 for log in logs)
+#     total_calories = sum(log.calories or 0 for log in logs)
+#     total_exercise = sum(log.exercise_duration or 0 for log in logs)
+#     # goal, _ = WeeklyGoal.objects.get_or_create(user=request.user)
+
+
+#     context = {
+#         'logs': logs,
+#         'total_water': total_water,
+#         'total_calories': total_calories,
+#         'total_exercise': total_exercise,
+#         # 'goal': goal,
+#     }
+#     return render(request, 'dashboard.html', context)
 
 
 
