@@ -1,16 +1,328 @@
-<!-- log_calories.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Calories</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Calories | Fit Profile</title>
+    <style>
+        :root {
+            --light-bg: #F5F5F5;
+            --danger: #D63031;
+            --primary: #0984E3;
+            --success: #00B894;
+            --dark: #2D3436;
+            --light-text: #F5F5F5;
+            --nutrition-orange: rgba(231, 76, 60, 0.1);
+            --nutrition-green: rgba(46, 204, 113, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--dark);
+            color: var(--light-text);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        nav button {
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+        
+        nav button:hover {
+            color: var(--danger);
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .calorie-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--nutrition-green) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, var(--nutrition-orange) 0%, transparent 20%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h2 {
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .calorie-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        label {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        input, select, textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.2);
+        }
+        
+        .calorie-submit {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calorie-submit:hover {
+            background-color: #00a381;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 184, 148, 0.3);
+        }
+        
+        .calorie-submit::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        
+        .calorie-submit:hover::after {
+            animation: shine 1.5s infinite;
+        }
+        
+        @keyframes shine {
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .food-visual {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+            gap: 10px;
+        }
+        
+        .food-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--success);
+            border-radius: 50%;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .food-icon:nth-child(1) {
+            background-color: var(--success);
+            animation-delay: 0s;
+        }
+        
+        .food-icon:nth-child(2) {
+            background-color: #FF9F43;
+            animation-delay: 0.3s;
+        }
+        
+        .food-icon:nth-child(3) {
+            background-color: #F368E0;
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .helptext {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        
+        .errorlist {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            list-style: none;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 0.8rem;
+            }
+            
+            nav {
+                margin-top: 0.8rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+            
+            .container {
+                padding: 0 0.8rem;
+            }
+            
+            .calorie-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Add Calories Consumed</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <header>
+        <div class="logo">Fit Profile</div>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'edit_goal' %}">Edit Goals</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background:none; border:none; color: var(--light-text); cursor: pointer; font-size: 0.9rem;">Log out</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="calorie-card">
+            <h2>Add Calories Consumed</h2>
+            
+            <div class="food-visual">
+                <div class="food-icon">🍎</div>
+                <div class="food-icon">🍗</div>
+                <div class="food-icon">🍕</div>
+            </div>
+            
+            <form method="POST" class="calorie-form">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <span class="helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="errorlist">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="calorie-submit">Log Calories</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

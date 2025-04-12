@@ -1,16 +1,352 @@
-<!-- log_calories.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Calories</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Exercise | Fit Profile</title>
+    <style>
+        :root {
+            --light-bg: #F5F5F5;
+            --danger: #D63031;
+            --primary: #0984E3;
+            --success: #00B894;
+            --dark: #2D3436;
+            --light-text: #F5F5F5;
+            --exercise-blue: rgba(9, 132, 227, 0.1);
+            --exercise-orange: rgba(248, 150, 30, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--dark);
+            color: var(--light-text);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        
+        nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        nav button {
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+        
+        nav button:hover {
+            color: var(--danger);
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .exercise-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--exercise-blue) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, var(--exercise-orange) 0%, transparent 20%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .exercise-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        label {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        input, select, textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.2);
+        }
+        
+        .exercise-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-submit:hover {
+            background-color: #0878c7;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(9, 132, 227, 0.3);
+        }
+        
+        .exercise-submit::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        
+        .exercise-submit:hover::after {
+            animation: shine 1.5s infinite;
+        }
+        
+        @keyframes shine {
+            100% {
+                left: 100%;
+            }
+        }
+        
+        .activity-visual {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+            gap: 15px;
+        }
+        
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        .activity-icon:nth-child(1) {
+            background-color: var(--primary);
+            animation-delay: 0s;
+        }
+        
+        .activity-icon:nth-child(2) {
+            background-color: var(--success);
+            animation-delay: 0.2s;
+        }
+        
+        .activity-icon:nth-child(3) {
+            background-color: #F368E0;
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .duration-input {
+            position: relative;
+        }
+        
+        .duration-input::after {
+            content: 'minutes';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .helptext {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        
+        .errorlist {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            list-style: none;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 0.8rem;
+            }
+            
+            nav {
+                margin-top: 0.8rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+            
+            .container {
+                padding: 0 0.8rem;
+            }
+            
+            .exercise-card {
+                padding: 1.5rem;
+            }
+            
+            .activity-visual {
+                gap: 10px;
+            }
+            
+            .activity-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Add Calories Consumed</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <header>
+        <div class="logo">Fit Profile</div>
+        <nav>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'edit_goal' %}">Edit Goals</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background:none; border:none; color: var(--light-text); cursor: pointer; font-size: 0.9rem;">Log out</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="exercise-card">
+            <h2>Add Exercise Duration</h2>
+            
+            <div class="activity-visual">
+                <div class="activity-icon">🏃</div>
+                <div class="activity-icon">🏋️</div>
+                <div class="activity-icon">🚴</div>
+            </div>
+            
+            <form method="POST" class="exercise-form">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group {% if 'duration' in field.name %}duration-input{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <span class="helptext">{{ field.help_text }}</span>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="errorlist">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="exercise-submit">Log Exercise</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

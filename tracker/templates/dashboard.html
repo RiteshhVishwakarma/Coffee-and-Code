@@ -45,7 +45,7 @@
   <main>
     <section class="summary">
       <!-- Typewriter effect for the heading -->
-      <h2 class="animated-title">Hi <span class="user-name">{{ request.user.username }}</span>👋, here's your daily summary 🚀</h2>
+      <h2 class="animated-title">Hi <span class="user-name">{{ request.user.username|capfirst }}</span>👋, here's your daily summary 🚀</h2>
       <p>{{ today|date:"l, F j, Y" }}</p>
     </section>
 
