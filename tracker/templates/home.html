@@ -1,13 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health & Fitness Tracker</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #00c9ff, #92fe9d);
+      color: #333;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 700px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #00a8cc;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 1rem;
+      background-color: #00a8cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0084a8;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-    <a href="{% url 'login' %}">Login Btn</a><br>
-    <a href="{% url 'about' %}">about us</a><br>
-    <a href="{% url 'profile' %}">Your Profile</a>
+  <div class="container">
+    <h1>Welcome to Health & Fitness Tracker</h1>
+    <p>Track your water intake, calories, and workouts – all in one place. Stay consistent, stay healthy! 🌱</p>
+    <button onclick="startApp()">Get Started</button>
+    <footer>Made with ❤️ at Hackverse</footer>
+  </div>
+
+  <script>
+    function startApp() {
+      // Replace this with redirect to login or register
+      window.location.href = "/login"; // Django login route
+    }
+  </script>
 </body>
 </html>
