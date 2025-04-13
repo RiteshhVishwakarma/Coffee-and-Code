@@ -28,8 +28,12 @@ DEBUG = True
 # DEBUG = False 
 
 # ALLOWED_HOSTS = [] # here is the problem
-ALLOWED_HOSTS = ['coffee-and-code-1.onrender.com'] # 
+ALLOWED_HOSTS = ['coffee-and-code-1.onrender.com']
 
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://coffee-and-code-1.onrender.com',
+]
 
 # Application definition
 
