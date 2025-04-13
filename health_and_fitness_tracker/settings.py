@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wgi5uvr*h6zz9=(bd1$do%i_qcp#pwz=kl=(mz^+rpf9zq2-2t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
+# DEBUG = False 
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = [] # here is the problem
+ALLOWED_HOSTS = ['*'] # 
 
 
 # Application definition
@@ -129,3 +131,10 @@ LOGIN_URL = '/login/'  # Redirect here if @login_required user is not logged in
 LOGIN_REDIRECT_URL = '/dashboard/'  # Where to go after successful login
 LOGOUT_REDIRECT_URL = '/'  # After logout, redirect to home or landing page
 
+# added this for host
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# added this for host
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
