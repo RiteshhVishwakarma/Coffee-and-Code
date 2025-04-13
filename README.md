@@ -1,5 +1,7 @@
 # Health-and-fitness-Tracker-
 Hackverse project 
+Project done - at 5.36 checkpoint 
+
 
 ## 🧑‍💻 User Guide – FitTrack
 
