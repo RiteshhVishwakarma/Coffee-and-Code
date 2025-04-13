@@ -28,7 +28,7 @@ DEBUG = True
 # DEBUG = False 
 
 # ALLOWED_HOSTS = [] # here is the problem
-ALLOWED_HOSTS = ['*'] # 
+ALLOWED_HOSTS = ['coffee-and-code-1.onrender.com'] # 
 
 
 # Application definition

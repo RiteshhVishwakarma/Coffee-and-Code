@@ -22,3 +22,4 @@ urlpatterns = [
     path('weekly-log/', views.weekly_log, name='weekly_log'),
     path('edit-goal/', views.edit_goal, name='edit_goal'),
 ]
+
