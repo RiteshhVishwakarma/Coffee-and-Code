@@ -20,8 +20,7 @@
   <main class="container">
     <aside class="profile-card">
       <div class="profile-image">
-        <!-- Replace with your profile picture -->
-        <!-- <img src="https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?t=st=1744447737~exp=1744451337~hmac=d880217edd5cdfc431bf133e23ae0813ef477a66a0140ac4b845ae1361a5a13c&w=996" alt="Profile Picture"> -->
+        <!-- Profile Picture -->
         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
       </div>
       <h2>{{ profile.name|capfirst }}</h2>
@@ -30,9 +29,10 @@
     <section class="info-card">
       <h3>Personal Information</h3>
       <div class="info-grid">
+        <!-- BMI Score Box -->
         <div class="info-box">
           <label class="label">BMI Score</label>
-          <p class="value-text red">{{ profile.bmi|floatformat:1 }}</p>
+          <p class="value-text {% if profile.bmi >= 30 %}red{% elif profile.bmi >= 25 %}orange{% else %}green{% endif %}">{{ profile.bmi|floatformat:1 }}</p>
           <small>
             {% if profile.bmi < 18.5 %}Underweight
             {% elif profile.bmi < 25 %}Normal weight
@@ -42,33 +42,39 @@
           </small>
         </div>
 
+        <!-- Daily Calorie Needs Box -->
         <div class="info-box">
           <label class="label">Daily Calorie Needs</label>
           <p class="value-text green">{{ profile.daily_calories }}</p>
           <small>Maintenance calories</small>
         </div>
 
+        <!-- Gender Box -->
         <div class="info-box">
           <label class="label">Gender</label>
           <p class="value-text">{{ profile.gender|title }}</p>
         </div>
 
+        <!-- Age Box -->
         <div class="info-box">
           <label class="label">Age</label>
           <p class="value-text">{{ profile.age }} years</p>
         </div>
 
+        <!-- Weight Box -->
         <div class="info-box">
           <label class="label">Weight</label>
           <p class="value-text">{{ profile.weight }} kg</p>
         </div>
 
+        <!-- Height Box -->
         <div class="info-box">
           <label class="label">Height</label>
           <p class="value-text">{{ profile.height }} cm</p>
         </div>
       </div>
     </section>
+
     <a href="{% url 'edit_profile' %}" class="edit-btn">Edit Profile</a>
   </main>
 </body>

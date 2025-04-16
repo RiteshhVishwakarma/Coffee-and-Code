@@ -15,32 +15,39 @@ class UserProfile(models.Model):
     weight = models.FloatField(default=65.0)  # Default weight in kg
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
 
+    @property
+    def bmi(self):
+        # Convert height to meters and calculate BMI
+        height_in_meters = self.height / 100
+        bmi = self.weight / (height_in_meters ** 2)
+        return round(bmi, 1)
+
+    @property
+    def daily_calories(self):
+        # Calculate BMR based on gender
+        if self.gender == 'male':
+            bmr = 88.362 + (13.397 * self.weight) + (4.799 * self.height) - (5.677 * self.age)
+        else:
+            bmr = 447.593 + (9.247 * self.weight) + (3.098 * self.height) - (4.330 * self.age)
+
+        # For simplicity, assuming sedentary activity level (adjust if needed)
+        calories = bmr * 1.2
+        return round(calories)
+
     def __str__(self):
         return self.user.username
-
-
-# class DailyLog(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     date = models.DateField(auto_now_add=True)
-#     calories_consumed = models.IntegerField(null=True, blank=True)  # in kcal
-#     calories_burned = models.IntegerField(null=True, blank=True)  # in kcal
-#     excersise_done = models.CharField(max_length=255, null=True, blank=True)  # e.g. "Running, Cycling"
-#     water_intake = models.FloatField(null=True, blank=True)
-
-#     def __str__(self):
-#         return f'{self.user.username} Daily Log - {self.date}'
 
 
 class DailyLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-
     water_intake = models.FloatField(null=True, blank=True)  # in litres
     calories = models.IntegerField(null=True, blank=True)    # in kcal
     exercise_duration = models.IntegerField(null=True, blank=True)  # in minutes
 
     def __str__(self):
         return f'{self.user.username} - {self.date}'
+
 
 class WeeklyGoal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -57,3 +64,6 @@ class Goal(models.Model):
     water_goal = models.FloatField(default=2.0)
     calories_goal = models.IntegerField(default=2000)
     exercise_goal = models.IntegerField(default=60)
+
+    # def __str__(self):
+    #     return f"{self.user.username} - Goal"
