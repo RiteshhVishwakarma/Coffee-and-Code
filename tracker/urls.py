@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.home, name = "home"),
     path('about', views.about, name = "about"),
     path('login', views.login_view, name = "login"),
-    path('profile', views.profile, name = "profile"),
+    path('profile/', views.profile, name = "profile"),
     path('register', views.register, name = "register"),
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -21,5 +21,6 @@ urlpatterns = [
     path('log/exercise/', views.add_exercise, name='log_exercise'),
     path('weekly-log/', views.weekly_log, name='weekly_log'),
     path('edit-goal/', views.edit_goal, name='edit_goal'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
 ]
 

@@ -75,3 +75,11 @@ class GoalForm(forms.ModelForm):
             'calories_goal': forms.NumberInput(attrs={'min': 0}),
             'exercise_goal': forms.NumberInput(attrs={'min': 0}),
         }
+
+
+
+# profile edit krne ka code
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['name', 'age', 'height', 'weight', 'gender']

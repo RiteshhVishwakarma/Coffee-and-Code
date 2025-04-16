@@ -6,6 +6,7 @@ from django.utils import timezone
 from datetime import date, timedelta
 from .models import Goal
 from .forms import GoalForm
+from .forms import UserProfileForm
 
 from .forms import (
     CustomUserRegistrationForm,
@@ -40,9 +41,10 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 auth_login(request, user)
+                messages.success(request, "Login successful. Welcome back!")
                 return redirect('dashboard')
             else:
-                messages.error(request, 'Invalid credentials')
+                messages.error(request, 'Invalid username or password.')
     else:
         form = CustomLoginForm()
     
@@ -62,14 +64,32 @@ def register(request):
 
 # Logout View
 def logout_view(request):
-    auth_logout(request)
-    return redirect('home')
+    from django.contrib.auth import logout
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('login')
 
-# Profile View
-@login_required
+
+
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     return render(request, 'profile.html', {'profile': user_profile})
+
+# Profile View
+@login_required
+def edit_profile(request):
+    profile = UserProfile.objects.get(user=request.user)
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'edit_profile.html', {'form': form})
 
 # Dashboard View
 @login_required
