@@ -24,7 +24,7 @@ from .models import (
 
 # Home Page
 def home(request): 
-    return render(request, 'index.html')
+    return render(request, 'home.html')
 
 # About Page
 def about(request):
@@ -169,14 +169,14 @@ def add_water(request):
         form = WaterIntakeForm(request.POST)
         if form.is_valid():
             log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
-            log.water_intake += form.cleaned_data['water_intake']
+            current_intake = log.water_intake or 0  # Handle None safely
+            log.water_intake = current_intake + form.cleaned_data['water_intake']
             log.save()
             return redirect('dashboard')
     else:
         form = WaterIntakeForm()
 
     return render(request, 'log_water.html', {'form': form})
-
 # Add Calories
 @login_required
 def add_calories(request):
@@ -184,7 +184,8 @@ def add_calories(request):
         form = CalorieForm(request.POST)
         if form.is_valid():
             log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
-            log.calories += form.cleaned_data['calories']
+            current_calories = log.calories or 0  # Handle None safely
+            log.calories = current_calories + form.cleaned_data['calories']
             log.save()
             return redirect('dashboard')
     else:
@@ -199,13 +200,15 @@ def add_exercise(request):
         form = ExerciseForm(request.POST)
         if form.is_valid():
             log, _ = DailyLog.objects.get_or_create(user=request.user, date=date.today())
-            log.exercise_duration += form.cleaned_data['exercise_duration']
+            current_duration = log.exercise_duration or 0  # Prevent NoneType error
+            log.exercise_duration = current_duration + form.cleaned_data['exercise_duration']
             log.save()
             return redirect('dashboard')
     else:
         form = ExerciseForm()
 
     return render(request, 'log_exercise.html', {'form': form})
+
 
 
 @login_required
