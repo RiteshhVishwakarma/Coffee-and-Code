@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-wgi5uvr*h6zz9=(bd1$do%i_qcp#pwz=kl=(mz^+rpf9zq2-2t
 DEBUG = True
 # DEBUG = False 
 
-ALLOWED_HOSTS = [] # here is the problem
-# ALLOWED_HOSTS = ['coffee-and-code-1.onrender.com']
+# ALLOWED_HOSTS = [] # here is the problem
+ALLOWED_HOSTS = ['coffee-and-code-1.onrender.com']
 
 
 CSRF_TRUSTED_ORIGINS = [
